@@ -5,9 +5,10 @@ from widgets import *
 from matched_filter import *
 from template import *
 import pickle
+from GW_class import *
 
-with open('data/GW190521_data_dict.pkl', 'rb') as f:
-    GW150914_data = pickle.load(f)
+
+GW_signal= GW150914
 
 # setup main plot
 fig, ax = plt.subplots()
@@ -30,7 +31,7 @@ button = make_button(fig)
 init_params = get_comp_params(sliders)
 
 # plot data and fit
-fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(init_params, GW150914_data), GW150914_data)
+fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(init_params, GW_signal.dictionary), GW_signal.dictionary)
 data_line, = ax.plot(times, data, color='Black', label='data', alpha=0.5)
 fit_line, = ax.plot(times, fit, color='C2', label='fit')
 ax.set_xlabel('time [s]')
@@ -72,8 +73,8 @@ def checkbox_update(val):
     sliders[2].on_changed(slider_update)
     sliders[3].on_changed(slider_update)
     # update data plotted
-    data_line.set_xdata(GW_signal.times)
-    data_line.set_ydata(GW_signal.waveformBP)
+    data_line.set_xdata( GW_signal.dictionary)
+    data_line.set_ydata(GW_signal.dictionary)
     error_text.set_visible(True)
     slider_update(val)
     fig.canvas.draw_idle()
@@ -90,7 +91,7 @@ def slider_update(val):
         error_text.set_visible(True)
         chi_text.set_visible(False)
     elif real_data_checked:
-        fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(params, GW150914_data), GW150914_data)
+        fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(params, GW_signal.dictionary),  GW_signal.dictionary)
         sliders[4].set_val(amp)
         sliders[5].set_val(phase)
         fit_line.set_ydata(fit)
@@ -98,7 +99,7 @@ def slider_update(val):
         error_text.set_visible(False)
         chi_text.set_text(rf'$\rho = {round(SNRmax, 3)}$')
     else:
-        fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(params, GW150914_data), GW150914_data)
+        fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(params,  GW_signal.dictionary),  GW_signal.dictionary)
         sliders[4].set_val(amp)
         sliders[5].set_val(phase)
         fit_line.set_ydata(fit)
@@ -133,62 +134,63 @@ def button_push(event):
 def button_push_signals(event):
     global GW_signal
     GW_signal =  GW150914
-    data_line.set_xdata(GW_signal.times)
-    data_line.set_ydata(GW_signal.waveformBP)
+    fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(GW_signal.ref_params,  GW_signal.dictionary),  GW_signal.dictionary)
+    data_line.set_xdata(times)
+    data_line.set_ydata(data)
     button_push(event)
     checkbox_update(event)
-    ymax = np.max(np.abs(GW_signal.waveformBP))
+    ymax = np.max(np.abs(data))
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     fig.canvas.draw_idle()
     return 
 
-def button_push_signals1(event):
-    global GW_signal
-    GW_signal=  GW190521
-    data_line.set_xdata(GW_signal.times)
-    data_line.set_ydata(GW_signal.waveformBP)
-    button_push(event)
-    checkbox_update(event)
-    ymax = np.max(np.abs(GW_signal.waveformBP))
-    ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
-    fig.canvas.draw_idle()
-    return 
+# def button_push_signals1(event):
+#     global GW_signal
+#     GW_signal=  GW190521
+#     data_line.set_xdata(GW_signal.times)
+#     data_line.set_ydata(GW_signal.waveformBP)
+#     button_push(event)
+#     checkbox_update(event)
+#     ymax = np.max(np.abs(GW_signal.waveformBP))
+#     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+#     fig.canvas.draw_idle()
+#     return 
 
-def button_push_signals2(event):
-    global GW_signal
-    GW_signal=  GW200129
-    data_line.set_xdata(GW_signal.times)
-    data_line.set_ydata(GW_signal.waveformBP)
-    button_push(event)
-    checkbox_update(event)
-    ymax = np.max(np.abs(GW_signal.waveformBP))
-    ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
-    fig.canvas.draw_idle()
-    return 
+# def button_push_signals2(event):
+#     global GW_signal
+#     GW_signal=  GW200129
+#     data_line.set_xdata(GW_signal.times)
+#     data_line.set_ydata(GW_signal.waveformBP)
+#     button_push(event)
+#     checkbox_update(event)
+#     ymax = np.max(np.abs(GW_signal.waveformBP))
+#     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+#     fig.canvas.draw_idle()
+#     return 
 
-def button_push_signals3(event):
-    global GW_signal
-    GW_signal=  GW200224
-    data_line.set_xdata(GW_signal.times)
-    data_line.set_ydata(GW_signal.waveformBP)
-    button_push(event)
-    checkbox_update(event)
-    ymax = np.max(np.abs(GW_signal.waveformBP))
-    ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
-    fig.canvas.draw_idle()
-    return 
+# def button_push_signals3(event):
+#     global GW_signal
+#     GW_signal=  GW200224
+#     data_line.set_xdata(GW_signal.times)
+#     data_line.set_ydata(GW_signal.waveformBP)
+#     button_push(event)
+#     checkbox_update(event)
+#     ymax = np.max(np.abs(GW_signal.waveformBP))
+#     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+#     fig.canvas.draw_idle()
+#     return 
 
-def button_push_signals4(event):
-    global GW_signal
-    GW_signal=  GW200220
-    data_line.set_xdata(GW_signal.times)
-    data_line.set_ydata(GW_signal.waveformBP)
-    button_push(event)
-    checkbox_update(event)
-    ymax = np.max(np.abs(GW_signal.waveformBP))
-    ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
-    fig.canvas.draw_idle()
-    return 
+# def button_push_signals4(event):
+#     global GW_signal
+#     GW_signal=  GW200220
+#     data_line.set_xdata(GW_signal.times)
+#     data_line.set_ydata(GW_signal.waveformBP)
+#     button_push(event)
+#     checkbox_update(event)
+#     ymax = np.max(np.abs(GW_signal.waveformBP))
+#     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+#     fig.canvas.draw_idle()
+#     return 
 
 # update plot as sliders move
 sliders[0].on_changed(slider_update)
@@ -209,9 +211,9 @@ def btn_push_sig(event, signal):
 
 button.on_clicked(button_push)
 buttons.on_clicked(button_push_signals)
-buttons1.on_clicked(button_push_signals1)
-buttons2.on_clicked(button_push_signals2)
-buttons3.on_clicked(button_push_signals3)
-buttons4.on_clicked(button_push_signals4)
+# buttons1.on_clicked(button_push_signals1)
+# buttons2.on_clicked(button_push_signals2)
+# buttons3.on_clicked(button_push_signals3)
+# buttons4.on_clicked(button_push_signals4)
 plt.show()
 

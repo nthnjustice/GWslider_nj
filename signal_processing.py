@@ -52,3 +52,4 @@ def bandpass(strain, fband, fs):
     normalization = np.sqrt((fband[1]-fband[0])/(fs/2))
     strain_bp = filtfilt(bb, ab, strain) / normalization
     return strain_bp
+

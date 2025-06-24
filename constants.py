@@ -52,6 +52,8 @@ spin_plus_min = -0.997
 spin_plus_max = 0.997
 spin_minus_min = -0.997
 spin_minus_max = 0.997
+amp_min= 0
+amp_max= 150
 
 
 # define other physical parameters

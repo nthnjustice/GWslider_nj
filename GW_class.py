@@ -45,24 +45,19 @@ class GWSignals:
 
 
 # load data 
-#150914 data
-
-# Load or define the GW150914 data
 with open('data/GW190521_data_dict.pkl', 'rb') as f:
     GW150914_data = pickle.load(f)
 
-# Create the GWSignals object
-#gw_150914 = GWSignals(times_150914, templateTD_150914, ref_params_150914, PSD_data_150914, PSD_data_150914)
+with open('data/GW190521_data_dict.pkl', 'rb') as f:
+    GW190521_data= pickle.load(f)
 
-# Get the dictionary for use in analysis
-#gw150914_dict = gw_150914.to_dict()
-
-
+with open('data/GW200129_data_dict.pkl', 'rb') as f:
+    GW200129_data= pickle.load(f)
 
 # class instantiation for real GW events
-#GW200129 = GWSignals(times_200129, strains_200129, strainsBP_200129, signal_ref_params['GW200129'][1], freqs_for_PSD_200129, PSD_200129)
+GW200129 = GWSignals(signal_ref_params['GW200129'][1], GW200129_data)
 GW150914 = GWSignals(signal_ref_params['GW150914'][1], GW150914_data)
-#GW190521= GWSignals(times_190521, strains_190521, strainsBP_190521, signal_ref_params['GW190521'][1], freqs_for_PSD_190521, PSD_190521)
+GW190521= GWSignals(signal_ref_params['GW190521'][1], GW190521_data)
 #GW200224= GWSignals(times_200224, strains_200224, strainsBP_200224, signal_ref_params['GW200224'][1], freqs_for_PSD_200224, PSD_200224)
 #GW200311= GWSignals(times_200311, strains_200311, strainsBP_200311, signal_ref_params['GW200311'][1], freqs_for_PSD_200311, PSD_200311)
 

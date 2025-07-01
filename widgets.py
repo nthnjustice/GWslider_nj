@@ -49,7 +49,7 @@ def make_checkboxes(fig):
 
     button4_ax = fig.add_axes(button4_signal)
     button4_ax.set_visible(False)  # hidden initially
-    buttons4 = Button(button4_ax, 'GW200220', hovercolor='0.97')
+    buttons4 = Button(button4_ax, 'GW200311', hovercolor='0.97')
 
     # Checkbox toggle 
     def on_checkbox_click(label):

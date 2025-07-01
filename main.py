@@ -144,17 +144,18 @@ def button_push_signals(event):
     fig.canvas.draw_idle()
     return 
 
-# def button_push_signals1(event):
-#     global GW_signal
-#     GW_signal=  GW190521
-#     data_line.set_xdata(GW_signal.times)
-#     data_line.set_ydata(GW_signal.waveformBP)
-#     button_push(event)
-#     checkbox_update(event)
-#     ymax = np.max(np.abs(GW_signal.waveformBP))
-#     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
-#     fig.canvas.draw_idle()
-#     return 
+def button_push_signals1(event):
+    global GW_signal
+    GW_signal=  GW190521
+    fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(GW_signal.ref_params,  GW_signal.dictionary),  GW_signal.dictionary)
+    data_line.set_xdata(times)
+    data_line.set_ydata(data)
+    button_push(event)
+    checkbox_update(event)
+    ymax = np.max(np.abs(data))
+    ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+    fig.canvas.draw_idle()
+    return 
 
 # def button_push_signals2(event):
 #     global GW_signal
@@ -203,15 +204,15 @@ checkboxes.on_clicked(checkbox_update)
 
 def btn_push_sig(event, signal):
     print(signal)
-    data_line.set_xdata(signal.times)
-    data_line.set_ydata(signal.waveformBP)
+    data_line.set_xdata(times)
+    data_line.set_ydata(data)
     checkbox_update(event)
     fig.canvas.draw_idle()
     return
 
 button.on_clicked(button_push)
 buttons.on_clicked(button_push_signals)
-# buttons1.on_clicked(button_push_signals1)
+buttons1.on_clicked(button_push_signals1)
 # buttons2.on_clicked(button_push_signals2)
 # buttons3.on_clicked(button_push_signals3)
 # buttons4.on_clicked(button_push_signals4)

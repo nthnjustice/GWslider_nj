@@ -3,12 +3,8 @@
 import matplotlib.pyplot as plt
 from widgets import *
 from matched_filter import *
-from template import *
-import pickle
 from GW_class import *
 
-
-GW_signal= GW150914
 
 # setup main plot
 fig, ax = plt.subplots()
@@ -16,12 +12,14 @@ fig, ax = plt.subplots()
 # adjust plot area
 fig.subplots_adjust(left=0.3, bottom=0.3, right=0.95, top=0.95)
 
-
 # make checkboxes
 checkboxes, buttons, buttons1, buttons2, buttons3, buttons4 = make_checkboxes(fig)
 
+# start off using simulated data
+GW_signal = GW_simulated
+
 # make sliders
-slider_axes, sliders = make_sliders(fig, checkboxes, np.array([30., 20., 0.1, 0.2]))
+slider_axes, sliders = make_sliders(fig, checkboxes, GW_signal.comp_params)
 
 # make button to go to reference parameters
 button = make_button(fig)
@@ -31,14 +29,13 @@ button = make_button(fig)
 init_params = get_comp_params(sliders)
 
 # plot data and fit
-fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(init_params, GW_signal.dictionary), GW_signal.dictionary)
+fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
 data_line, = ax.plot(times, data, color='Black', label='data', alpha=0.5)
 fit_line, = ax.plot(times, fit, color='C2', label='fit')
 ax.set_xlabel('time [s]')
 ax.set_ylabel('strain')
 ax.legend(loc='upper left')
-# ax.set_xlim(0.25, 0.46)
-ax.set_xlim(-0.25, 0.2)
+ax.set_xlim(0.25, 0.46)
 
 # make error message if spins are outside domain
 error_text = fig.text(0.05, 0.1, 'Spins not in domain.', transform=ax.transAxes, fontsize=10)
@@ -52,18 +49,18 @@ chi_text = fig.text(0.35, 0.35, rf'$\rho = {round(SNRmax, 3)}$')
 def checkbox_update(val):
     # store current parameter values
     global slider_axes, sliders
-    param_vals = get_comp_params(sliders)
     # remove old sliders
     remove_sliders(slider_axes, sliders)
     # check if using real data or not
     real_data_checked = checkboxes.get_status()[2]
     if not real_data_checked:
         global GW_signal
-        GW_signal = GWsimulated
-        ymax = np.max(np.abs(GWsimulated.waveformTD))
+        GW_signal = GW_simulated
+        fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+        ymax = np.max(np.abs(data))
         ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     # make new sliders
-    slider_axes, sliders = make_sliders(fig, checkboxes, init_params)
+    slider_axes, sliders = make_sliders(fig, checkboxes, GW_signal.comp_params)
     # remove initial position ticks on each slider
     for slider in sliders:
         slider.ax.get_lines()[0].set_visible(False)
@@ -73,9 +70,7 @@ def checkbox_update(val):
     sliders[2].on_changed(slider_update)
     sliders[3].on_changed(slider_update)
     # update data plotted
-    data_line.set_xdata( GW_signal.dictionary)
-    data_line.set_ydata(GW_signal.dictionary)
-    error_text.set_visible(True)
+    # error_text.set_visible(True)
     slider_update(val)
     fig.canvas.draw_idle()
     return
@@ -91,7 +86,7 @@ def slider_update(val):
         error_text.set_visible(True)
         chi_text.set_visible(False)
     elif real_data_checked:
-        fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(params, GW_signal.dictionary),  GW_signal.dictionary)
+        fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(params, GW_signal)
         sliders[4].set_val(amp)
         sliders[5].set_val(phase)
         fit_line.set_ydata(fit)
@@ -99,7 +94,7 @@ def slider_update(val):
         error_text.set_visible(False)
         chi_text.set_text(rf'$\rho = {round(SNRmax, 3)}$')
     else:
-        fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(params,  GW_signal.dictionary),  GW_signal.dictionary)
+        fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(params, GW_signal)
         sliders[4].set_val(amp)
         sliders[5].set_val(phase)
         fit_line.set_ydata(fit)
@@ -134,12 +129,13 @@ def button_push(event):
 def button_push_signals(event):
     global GW_signal
     GW_signal =  GW150914
-    fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(GW_signal.ref_params,  GW_signal.dictionary),  GW_signal.dictionary)
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
+    ax.set_xlim(0.25, 0.46)
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     fig.canvas.draw_idle()
     return 
@@ -148,50 +144,63 @@ def button_push_signals1(event):
     global GW_signal
     GW_signal=  GW190521
     fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(GW_signal.ref_params,  GW_signal.dictionary),  GW_signal.dictionary)
+    GW_signal = GW190521
+    print('GW190521')
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
+    ax.set_xlim(-0.25, 0.2)
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     fig.canvas.draw_idle()
     return 
 
-# def button_push_signals2(event):
-#     global GW_signal
-#     GW_signal=  GW200129
-#     data_line.set_xdata(GW_signal.times)
-#     data_line.set_ydata(GW_signal.waveformBP)
-#     button_push(event)
-#     checkbox_update(event)
-#     ymax = np.max(np.abs(GW_signal.waveformBP))
-#     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
-#     fig.canvas.draw_idle()
-#     return 
+def button_push_signals2(event):
+    global GW_signal
+    GW_signal = GW200129
+    print('GW190521')
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+    data_line.set_xdata(times)
+    data_line.set_ydata(data)
+    button_push(event)
+    checkbox_update(event)
+    ymax = np.max(np.abs(data))
+    ax.set_xlim(-0.25, 0.2)
+    ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+    fig.canvas.draw_idle()
+    return 
 
-# def button_push_signals3(event):
-#     global GW_signal
-#     GW_signal=  GW200224
-#     data_line.set_xdata(GW_signal.times)
-#     data_line.set_ydata(GW_signal.waveformBP)
-#     button_push(event)
-#     checkbox_update(event)
-#     ymax = np.max(np.abs(GW_signal.waveformBP))
-#     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
-#     fig.canvas.draw_idle()
-#     return 
+def button_push_signals3(event):
+    global GW_signal
+    GW_signal = GW200224
+    print('GW190521')
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+    data_line.set_xdata(times)
+    data_line.set_ydata(data)
+    button_push(event)
+    checkbox_update(event)
+    ymax = np.max(np.abs(data))
+    ax.set_xlim(-0.25, 0.2)
+    ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+    fig.canvas.draw_idle()
+    return 
 
-# def button_push_signals4(event):
-#     global GW_signal
-#     GW_signal=  GW200220
-#     data_line.set_xdata(GW_signal.times)
-#     data_line.set_ydata(GW_signal.waveformBP)
-#     button_push(event)
-#     checkbox_update(event)
-#     ymax = np.max(np.abs(GW_signal.waveformBP))
-#     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
-#     fig.canvas.draw_idle()
-#     return 
+def button_push_signals4(event):
+    global GW_signal
+    GW_signal = GW200311
+    print('GW190521')
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+    data_line.set_xdata(times)
+    data_line.set_ydata(data)
+    button_push(event)
+    checkbox_update(event)
+    ymax = np.max(np.abs(data))
+    ax.set_xlim(-0.25, 0.2)
+    ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+    fig.canvas.draw_idle()
+    return 
 
 # update plot as sliders move
 sliders[0].on_changed(slider_update)
@@ -216,5 +225,8 @@ buttons1.on_clicked(button_push_signals1)
 # buttons2.on_clicked(button_push_signals2)
 # buttons3.on_clicked(button_push_signals3)
 # buttons4.on_clicked(button_push_signals4)
+buttons2.on_clicked(button_push_signals2)
+buttons3.on_clicked(button_push_signals3)
+buttons4.on_clicked(button_push_signals4)
 plt.show()
 

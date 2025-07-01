@@ -6,6 +6,8 @@ from scipy.signal.windows import tukey
 from signal_processing import whiten, bandpass
 import matplotlib.pyplot as plt
 
+from template import get_template
+
 
 def matched_filter(template, data, time, data_psd, fs):
     """Runs the matched filter calculation given a specific real template, strain
@@ -195,3 +197,10 @@ def calculate_matched_filter(template_p, total_data, t_amount=4):
             template_p, fband, filter_data[det], data_psd, dt)
 
     return template_wbp, strain_whitenbp, time_filtered - time_center, SNRmax, 1 / d_eff, phase
+
+
+# wrapper function for matched filter
+def wrapped_matched_filter(params, GW_signal):
+    return calculate_matched_filter(get_template(params, GW_signal.dictionary), GW_signal.dictionary)
+
+

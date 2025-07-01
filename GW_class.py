@@ -11,17 +11,11 @@ import pickle
 from signal_processing import *
 
 
-##GW_class.waveform_TD could be replaced with the strain data found in the dictionary
-
-
 class GWSignals:
 
-    def __init__(self, ref_params, dictionary, simulated=False):
-
-        self.dictionary= dictionary
-
-        # simulated signal or not
-        self.simulated = simulated
+    def __init__(self, ref_params, dictionary):
+        # dictionary which contains data for event
+        self.dictionary = dictionary
 
         # reference parameters
         #add amplitude into reference params 
@@ -60,18 +54,38 @@ GW150914 = GWSignals(signal_ref_params['GW150914'][1], GW150914_data)
 GW190521= GWSignals(signal_ref_params['GW190521'][1], GW190521_data)
 #GW200224= GWSignals(times_200224, strains_200224, strainsBP_200224, signal_ref_params['GW200224'][1], freqs_for_PSD_200224, PSD_200224)
 #GW200311= GWSignals(times_200311, strains_200311, strainsBP_200311, signal_ref_params['GW200311'][1], freqs_for_PSD_200311, PSD_200311)
+with open('data/GW150914_data_dict.pkl', 'rb') as f:
+    GW150914_data = pickle.load(f)
+
+with open('data/GW190521_data_dict.pkl', 'rb') as f:
+    GW190521_data = pickle.load(f)
+
+with open('data/GW200129_data_dict.pkl', 'rb') as f:
+    GW200129_data = pickle.load(f)
+
+with open('data/GW200224_data_dict.pkl', 'rb') as f:
+    GW200224_data = pickle.load(f)
+
+with open('data/GW200311_data_dict.pkl', 'rb') as f:
+    GW200311_data = pickle.load(f)
+
+# class instantiation for real GW events
+GW150914 = GWSignals(signal_ref_params['GW150914'][1], GW150914_data)
+GW190521 = GWSignals(signal_ref_params['GW190521'][1], GW190521_data)
+GW200129 = GWSignals(signal_ref_params['GW200129'][1], GW200129_data)
+GW200224 = GWSignals(signal_ref_params['GW200224'][1], GW200224_data)
+GW200311 = GWSignals(signal_ref_params['GW200311'][1], GW200311_data)
+
+GW_simulated = GWSignals(signal_ref_params['GW150914'][1], GW150914_data)
+# template = 
+# GW_simulated.dictionary['H1']['strain']
 
 
-# # class instantiation for simulated GW event
-# aLIGO_freqs_for_PSD, aLIGO_theoretical_PSD = np.load('data/simulated/aLIGO_PSD.npy')
-# aLIGO_theoretical_ASD = np.sqrt(aLIGO_theoretical_PSD)
-# ASD_to_whiten_simul = np.ones(Nf)
-# ASD_to_whiten_simul[-waveform.num_freqs:] = interp1d(aLIGO_freqs_for_PSD, aLIGO_theoretical_ASD)(freqs)
-# simulated_waveform_FD = waveform.get_FD_waveform(params_inj, 0.0)
-# simulated_waveform_TD = waveform.iFFT_waveform(simulated_waveform_FD / ASD_to_whiten_simul)
-
-# GWsimulated = GWSignals(waveform.times, simulated_waveform_TD, simulated_waveform_TD, [m1_inj, m2_inj, spin_plus_inj, spin_minus_inj],
-#                         aLIGO_freqs_for_PSD, aLIGO_theoretical_PSD, simulated=True)
-
+# {'H1': {'strain': strain_H1, 'strain_whiten': strain_H1_whiten,
+#                          'strain_whitenbp': strain_H1_whitenbp},
+#                   'L1': {'strain': strain_L1, 'strain_whiten': strain_L1_whiten,
+#                          'strain_whitenbp': strain_L1_whitenbp},
+#                   'time': time, 'time_center': time_center, 'dt': dt, 'fs': fs,
+#                   'large_data_psds': large_data_psds}
 
 

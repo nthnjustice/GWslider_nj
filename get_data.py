@@ -121,7 +121,6 @@ def get_strain_whitenbp_data(fn_H1, fn_L1, fband, large_data_filename, time_cent
 #      pickle.dump(GW190521_data_dict, f)
 
 # # save total data for GW2002129
-
 # GW200129_data_dict= get_strain_whitenbp_data('H-H1_GWOSC_4KHZ_R1-1264316101-32.hdf5',
 #                                              'L-L1_GWOSC_4KHZ_R1-1264316101-32.hdf5',
 #                                              [35., 350.],
@@ -131,7 +130,6 @@ def get_strain_whitenbp_data(fn_H1, fn_L1, fband, large_data_filename, time_cent
 
 
 # #save data for 200224
-
 # GW200224_data_dict= get_strain_whitenbp_data('H-H1_GWOSC_4KHZ_R1-1266618157-32.hdf5',
 #                                              'L-L1_GWOSC_4KHZ_R1-1266618157-32.hdf5',
 #                                              [35., 350.],
@@ -141,11 +139,18 @@ def get_strain_whitenbp_data(fn_H1, fn_L1, fband, large_data_filename, time_cent
 
 
 # #save data for 200311
-
 # GW200311_data_dict= get_strain_whitenbp_data('H-H1_GWOSC_4KHZ_R1-1267963136-32.hdf5',
 #                                              'L-L1_GWOSC_4KHZ_R1-1267963136-32.hdf5',
 #                                              [35., 350.],
 #                                              'GWOSC_4KHZ_R1-1267961104-4096.hdf5',
 #                                              1267963151.3)
 # with open('data/GW200311_data_dict.pkl', 'wb') as f: pickle.dump(GW200311_data_dict, f)
+
+#save data for 191109
+GW191109_data_dict= get_strain_whitenbp_data('H-H1_GWOSC_4KHZ_R1-1257296840-32.hdf5',
+                                              'L-L1_GWOSC_4KHZ_R1-1257296840-32.hdf5',
+                                              [35., 350.],
+                                              'GWOSC_4KHZ_R1-1257296840-32.hdf5',
+                                              1257296855.2)
+with open('data/GW191109_data_dict.pkl', 'wb') as f: pickle.dump(GW191109_data_dict, f)
 

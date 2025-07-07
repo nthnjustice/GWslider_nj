@@ -13,7 +13,7 @@ fig, ax = plt.subplots()
 fig.subplots_adjust(left=0.3, bottom=0.3, right=0.95, top=0.95)
 
 # make checkboxes
-checkboxes, buttons, buttons1, buttons2, buttons3, buttons4 = make_checkboxes(fig)
+checkboxes, buttons, buttons1, buttons2, buttons3, buttons4, buttons5 = make_checkboxes(fig)
 
 # start off using simulated data
 GW_signal = GW_simulated
@@ -145,7 +145,6 @@ def button_push_signals1(event):
     GW_signal=  GW190521
     fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(GW_signal.ref_params,  GW_signal.dictionary),  GW_signal.dictionary)
     GW_signal = GW190521
-    print('GW190521')
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
@@ -160,7 +159,6 @@ def button_push_signals1(event):
 def button_push_signals2(event):
     global GW_signal
     GW_signal = GW200129
-    print('GW190521')
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
@@ -175,7 +173,6 @@ def button_push_signals2(event):
 def button_push_signals3(event):
     global GW_signal
     GW_signal = GW200224
-    print('GW190521')
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
@@ -190,7 +187,6 @@ def button_push_signals3(event):
 def button_push_signals4(event):
     global GW_signal
     GW_signal = GW200311
-    print('GW190521')
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
@@ -201,6 +197,21 @@ def button_push_signals4(event):
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     fig.canvas.draw_idle()
     return 
+
+def button_push_signals5(event):
+    global GW_signal
+    GW_signal = GW191109
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+    data_line.set_xdata(times)
+    data_line.set_ydata(data)
+    button_push(event)
+    checkbox_update(event)
+    ymax = np.max(np.abs(data))
+    ax.set_xlim(-0.25, 0.2)
+    ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+    fig.canvas.draw_idle()
+    return 
+
 
 # update plot as sliders move
 sliders[0].on_changed(slider_update)
@@ -225,5 +236,6 @@ buttons1.on_clicked(button_push_signals1)
 buttons2.on_clicked(button_push_signals2)
 buttons3.on_clicked(button_push_signals3)
 buttons4.on_clicked(button_push_signals4)
+buttons5.on_clicked(button_push_signals5)
 plt.show()
 

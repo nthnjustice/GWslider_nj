@@ -13,7 +13,7 @@ fig, ax = plt.subplots()
 fig.subplots_adjust(left=0.3, bottom=0.3, right=0.95, top=0.95)
 
 # make checkboxes
-checkboxes, buttons, buttons1, buttons2, buttons3, buttons4, buttons5 = make_checkboxes(fig)
+checkboxes, buttons, buttons1, buttons2, buttons3, buttons4, buttons5, buttons6 = make_checkboxes(fig)
 
 # start off using simulated data
 GW_signal = GW_simulated
@@ -104,6 +104,14 @@ def slider_update(val):
     fig.canvas.draw_idle()
     return
 
+
+# function to have buttons change color when clicked 
+def on_button_click(event):
+    button.color = 'green' 
+    fig.canvas.draw_idle() 
+    return
+
+
 # function to send sliders to reference parameters
 def button_push(event):
     # get status of checkboxes
@@ -129,6 +137,7 @@ def button_push(event):
 def button_push_signals(event):
     global GW_signal
     GW_signal =  GW150914
+    on_button_click(GW_signal)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
@@ -211,6 +220,21 @@ def button_push_signals5(event):
     fig.canvas.draw_idle()
     return 
 
+def button_push_signals6(event):
+    global GW_signal
+    GW_signal = GW190828
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+    data_line.set_xdata(times)
+    data_line.set_ydata(data)
+    button_push(event)
+    checkbox_update(event)
+    ymax = np.max(np.abs(data))
+    ax.set_xlim(-0.25, 0.2)
+    ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+    fig.canvas.draw_idle()
+    return 
+
+
 
 # update plot as sliders move
 sliders[0].on_changed(slider_update)
@@ -222,12 +246,13 @@ sliders[3].on_changed(slider_update)
 checkboxes.on_clicked(checkbox_update)
 
 def btn_push_sig(event, signal):
-    print(signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
     checkbox_update(event)
     fig.canvas.draw_idle()
     return
+
+
 
 button.on_clicked(button_push)
 buttons.on_clicked(button_push_signals)
@@ -236,5 +261,6 @@ buttons2.on_clicked(button_push_signals2)
 buttons3.on_clicked(button_push_signals3)
 buttons4.on_clicked(button_push_signals4)
 buttons5.on_clicked(button_push_signals5)
+buttons6.on_clicked(button_push_signals6)
 plt.show()
 

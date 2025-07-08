@@ -55,6 +55,10 @@ def make_checkboxes(fig):
     button5_ax.set_visible(False)  #hidden initially
     buttons5= Button(button5_ax, 'GW191109', hovercolor= '0.97')
 
+    button6_ax= fig.add_axes(button6_signal)
+    button6_ax.set_visible(False)  #hidden initially
+    buttons6= Button(button6_ax, 'GW190828', hovercolor= '0.97')
+
     # Checkbox toggle 
     def on_checkbox_click(label):
         if label == real_data_label:
@@ -66,6 +70,7 @@ def make_checkboxes(fig):
             button3_ax.set_visible(show_dropdown)
             button4_ax.set_visible(show_dropdown)
             button5_ax.set_visible(show_dropdown)
+            button6_ax.set_visible(show_dropdown)
             fig.canvas.draw_idle()
 
 
@@ -82,8 +87,9 @@ def make_checkboxes(fig):
     buttons3.on_clicked(on_select)
     buttons4.on_clicked(on_select)
     buttons5.on_clicked(on_select)
+    buttons6.on_clicked(on_select)
 
-    return checkboxes, buttons, buttons1, buttons2, buttons3, buttons4, buttons5
+    return checkboxes, buttons, buttons1, buttons2, buttons3, buttons4, buttons5, buttons6
 
 
 # function to make sliders

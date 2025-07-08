@@ -143,8 +143,7 @@ def button_push_signals(event):
 def button_push_signals1(event):
     global GW_signal
     GW_signal=  GW190521
-    fit, data, times, SNRmax, amp, phase = calculate_matched_filter(get_template(GW_signal.ref_params,  GW_signal.dictionary),  GW_signal.dictionary)
-    GW_signal = GW190521
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)

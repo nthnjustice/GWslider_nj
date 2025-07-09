@@ -105,11 +105,11 @@ def slider_update(val):
     return
 
 
-# function to have buttons change color when clicked 
-def on_button_click(event):
-    button.color = 'green' 
-    fig.canvas.draw_idle() 
-    return
+# # function to have buttons change color when clicked 
+# def on_button_click(event, button_to_change):
+#     button_to_change.color = 'green' 
+#     fig.canvas.draw_idle() 
+#     return
 
 
 # function to send sliders to reference parameters
@@ -137,7 +137,7 @@ def button_push(event):
 def button_push_signals(event):
     global GW_signal
     GW_signal =  GW150914
-    on_button_click(GW_signal)
+    on_button_click(event, buttons)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
@@ -152,6 +152,7 @@ def button_push_signals(event):
 def button_push_signals1(event):
     global GW_signal
     GW_signal=  GW190521
+    on_button_click(event, buttons1)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
@@ -167,6 +168,7 @@ def button_push_signals1(event):
 def button_push_signals2(event):
     global GW_signal
     GW_signal = GW200129
+    on_button_click(event, buttons2)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
@@ -181,6 +183,7 @@ def button_push_signals2(event):
 def button_push_signals3(event):
     global GW_signal
     GW_signal = GW200224
+    on_button_click(event, buttons3)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
@@ -195,6 +198,7 @@ def button_push_signals3(event):
 def button_push_signals4(event):
     global GW_signal
     GW_signal = GW200311
+    on_button_click(event, buttons4)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
@@ -209,6 +213,7 @@ def button_push_signals4(event):
 def button_push_signals5(event):
     global GW_signal
     GW_signal = GW191109
+    on_button_click(event, buttons5)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
@@ -223,6 +228,7 @@ def button_push_signals5(event):
 def button_push_signals6(event):
     global GW_signal
     GW_signal = GW190828
+    on_button_click(event, buttons6)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
@@ -262,5 +268,17 @@ buttons3.on_clicked(button_push_signals3)
 buttons4.on_clicked(button_push_signals4)
 buttons5.on_clicked(button_push_signals5)
 buttons6.on_clicked(button_push_signals6)
+signal_buttons = [buttons, buttons1, buttons2, buttons3, buttons4, buttons5, buttons6]
+
+
+# function to have buttons change color when clicked 
+def on_button_click(event, button_to_change):
+    for button_obj in signal_buttons:
+        button_obj.color = 'grey'
+    
+    button_to_change.color = 'green' 
+    fig.canvas.draw_idle() 
+    return
+
 plt.show()
 

@@ -109,8 +109,8 @@ def make_sliders(fig, checkboxes, init_comp_params):
     if chirp_q_checked:
         chirp_init = mchirp_from_mass1_mass2(m1_init, m2_init)
         ratio_init = m2_init / m1_init
-        slider1 = Slider(ax=ax1, label=chirp_label, valmin=chirp_init - 10, valmax=chirp_init + 10, valinit=chirp_init)
-        slider2 = Slider(ax=ax2, label=ratio_label, valmin=ratio_min, valmax=ratio_max, valinit=ratio_init)
+        slider1 = Slider(ax=ax1, label=chirp_label, valmin=chirp_init - 10, valmax=chirp_init + 10, valinit=np.random.uniform(chirp_init - 10, chirp_init + 10))
+        slider2 = Slider(ax=ax2, label=ratio_label, valmin=ratio_min, valmax=ratio_max, valinit=np.random.uniform(ratio_min, ratio_max))
     else:
         slider1 = Slider(ax=ax1, label=m1_label, valmin=m1_init - 10, valmax=m1_init + 10, valinit=m1_init)
         slider2 = Slider(ax=ax2, label=m2_label, valmin=m2_init - 10, valmax=m2_init + 10, valinit=m2_init)

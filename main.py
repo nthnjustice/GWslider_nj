@@ -6,6 +6,8 @@ from matched_filter import *
 from GW_class import *
 
 
+det = input('Detector [H1, L1]: ')
+
 # setup main plot
 fig, ax = plt.subplots()
 
@@ -29,7 +31,7 @@ button = make_button(fig)
 init_params = get_comp_params(sliders)
 
 # plot data and fit
-fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
 data_line, = ax.plot(times, data, color='Black', label='data', alpha=0.5)
 fit_line, = ax.plot(times, fit, color='C2', label='fit')
 ax.set_xlabel('time [s]')
@@ -56,7 +58,7 @@ def checkbox_update(val):
     if not real_data_checked:
         global GW_signal
         GW_signal = GW_simulated
-        fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+        fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
         ymax = np.max(np.abs(data))
         ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     # make new sliders
@@ -86,7 +88,7 @@ def slider_update(val):
         error_text.set_visible(True)
         chi_text.set_visible(False)
     elif real_data_checked:
-        fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(params, GW_signal)
+        fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(params, GW_signal, det)
         sliders[4].set_val(amp)
         sliders[5].set_val(phase)
         fit_line.set_ydata(fit)
@@ -94,7 +96,7 @@ def slider_update(val):
         error_text.set_visible(False)
         chi_text.set_text(rf'$\rho = {round(SNRmax, 3)}$')
     else:
-        fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(params, GW_signal)
+        fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(params, GW_signal, det)
         sliders[4].set_val(amp)
         sliders[5].set_val(phase)
         fit_line.set_ydata(fit)
@@ -138,7 +140,7 @@ def button_push_signals(event):
     global GW_signal
     GW_signal =  GW150914
     on_button_click(event, buttons)
-    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
     button_push(event)
@@ -153,8 +155,7 @@ def button_push_signals1(event):
     global GW_signal
     GW_signal=  GW190521
     on_button_click(event, buttons1)
-    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
-    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
     button_push(event)
@@ -169,7 +170,7 @@ def button_push_signals2(event):
     global GW_signal
     GW_signal = GW200129
     on_button_click(event, buttons2)
-    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
     button_push(event)
@@ -184,7 +185,7 @@ def button_push_signals3(event):
     global GW_signal
     GW_signal = GW200224
     on_button_click(event, buttons3)
-    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
     button_push(event)
@@ -199,7 +200,7 @@ def button_push_signals4(event):
     global GW_signal
     GW_signal = GW200311
     on_button_click(event, buttons4)
-    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
     button_push(event)
@@ -214,7 +215,7 @@ def button_push_signals5(event):
     global GW_signal
     GW_signal = GW191109
     on_button_click(event, buttons5)
-    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
     button_push(event)
@@ -229,7 +230,7 @@ def button_push_signals6(event):
     global GW_signal
     GW_signal = GW190828
     on_button_click(event, buttons6)
-    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal)
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
     button_push(event)

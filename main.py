@@ -275,9 +275,9 @@ signal_buttons = [buttons, buttons1, buttons2, buttons3, buttons4, buttons5, but
 # function to have buttons change color when clicked 
 def on_button_click(event, button_to_change):
     for button_obj in signal_buttons:
-        button_obj.color = 'grey'
+        button_obj.color = '0.97'
     
-    button_to_change.color = 'green' 
+    button_to_change.color = 'C2' 
     fig.canvas.draw_idle() 
     return
 

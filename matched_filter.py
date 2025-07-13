@@ -5,7 +5,7 @@ import numpy as np
 from scipy.signal.windows import tukey
 from signal_processing import whiten, bandpass
 import matplotlib.pyplot as plt
-
+from widgets import *
 from template import get_template
 
 
@@ -77,7 +77,7 @@ def matched_filter(template, data, time, data_psd, fs):
 
     # Calculate the effective distance
     d_eff = sigma / SNRmax
-    # -- Calculate optimal horizon distnace
+    # -- Calculate optimal horizon distance
     horizon = sigma/8
 
     # Extract time offset and phase at peak
@@ -126,7 +126,7 @@ def get_shifted_data(template_p, fband, filter_data, data_psd, dt):
 
 
 # calculate matched filter between actual template
-def calculate_matched_filter(template_p, total_data, det, t_amount=4):
+def calculate_matched_filter(template_p, total_data, t_amount=4):
     """Calculates the best-fit template phase, offset, d_eff, horizon, and SNRmax
     values for both detectors on a given stretch of data given the desires
     template. Also can plot template shifts/residual data and print the
@@ -172,33 +172,35 @@ def calculate_matched_filter(template_p, total_data, det, t_amount=4):
     template = template_p
 
     # loop over the detectors
-    strain = total_data[det]['strain'][time_filter_window]
-    strain_whiten = total_data[det]['strain_whiten'][time_filter_window]
-    strain_whitenbp = total_data[det]['strain_whitenbp'][time_filter_window]
-    data_psd = large_data_psds[det]
+    dets = ['H1', 'L1']
+    for i, det in enumerate(dets):
+        strain = total_data[det]['strain'][time_filter_window]
+        strain_whiten = total_data[det]['strain_whiten'][time_filter_window]
+        strain_whitenbp = total_data[det]['strain_whitenbp'][time_filter_window]
+        data_psd = large_data_psds[det]
 
-    # save the time for later
-    filter_data[det]['time'] = time_filtered
+        # save the time for later
+        filter_data[det]['time'] = time_filtered
 
-    # find the best fit phase, offset, d_eff, horizon
-    SNRmax, timemax, d_eff, horizon, phase, offset = matched_filter(
-        template, strain, time_filtered, data_psd, fs)
+        # find the best fit phase, offset, d_eff, horizon
+        SNRmax, timemax, d_eff, horizon, phase, offset = matched_filter(
+            template, strain, time_filtered, data_psd, fs)
 
-    # save these vals for later
-    filter_data[det]['SNR'] = SNRmax
-    filter_data[det]['d_eff'] = d_eff
-    filter_data[det]['phase'] = phase
-    filter_data[det]['offset'] = offset
+        # save these vals for later
+        filter_data[det]['SNR'] = SNRmax
+        filter_data[det]['d_eff'] = d_eff
+        filter_data[det]['phase'] = phase
+        filter_data[det]['offset'] = offset
 
-    # get residuals and whitened data/template
-    template_wbp = get_shifted_data(
-        template_p, fband, filter_data[det], data_psd, dt)
+        # get residuals and whitened data/template
+        template_wbp = get_shifted_data(
+            template_p, fband, filter_data[det], data_psd, dt)
 
     return template_wbp, strain_whitenbp, time_filtered - time_center, SNRmax, 1 / d_eff, phase
 
 
 # wrapper function for matched filter
 def wrapped_matched_filter(params, GW_signal, det):
-    return calculate_matched_filter(get_template(params, GW_signal.dictionary), GW_signal.dictionary, det)
+    return calculate_matched_filter(get_template(params, GW_signal.dictionary), GW_signal.dictionary)
 
 

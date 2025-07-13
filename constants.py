@@ -119,5 +119,6 @@ spin_plus_label = r'$\chi_+$'
 spin_minus_label = r'$\chi_-$'
 amp_label= r'amplitude'
 phase_label= r'phase'
+det_label= r'Livingston Detector'
 
 

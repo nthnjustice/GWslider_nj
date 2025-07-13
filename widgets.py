@@ -14,8 +14,7 @@ def remove_sliders(slider_axes, sliders):
     for slider in sliders:
         slider.disconnect_events()
 
-
-
+det_state = {'det': 'H1'}
 # function to make checkboxes
 def make_checkboxes(fig):
     # make axes
@@ -24,9 +23,10 @@ def make_checkboxes(fig):
     chirp_q_label = r'use $\mathcal{M}$ and $q$'
     plus_minus_label = r'use $\chi_+$ and $\chi_-$'
     real_data_label = 'use real data'
-    checkbox_labels = [chirp_q_label, plus_minus_label, real_data_label]
+    det_label= 'Livingston'
+    checkbox_labels = [chirp_q_label, plus_minus_label, real_data_label, det_label]
     # checkboxes start unchecked
-    init_status = [False, False, False]
+    init_status = [False, False, False, False]
     checkboxes = CheckButtons(checkbox_ax, checkbox_labels, init_status)
 
     #create buttons
@@ -72,6 +72,11 @@ def make_checkboxes(fig):
             button5_ax.set_visible(show_dropdown)
             button6_ax.set_visible(show_dropdown)
             fig.canvas.draw_idle()
+        
+        elif label == det_label:
+            idx = checkbox_labels.index(label)
+            is_livingston = checkboxes.get_status()[idx]
+            det_state['det'] = 'L1' if is_livingston else 'H1'
 
 
     checkboxes.on_clicked(on_checkbox_click)
@@ -97,7 +102,7 @@ def make_sliders(fig, checkboxes, init_comp_params):
     # unpack parameter values
     m1_init, m2_init, chi1_init, chi2_init = init_comp_params
     # get status of checkboxes
-    chirp_q_checked, plus_minus_checked, real_data_checked = checkboxes.get_status()
+    chirp_q_checked, plus_minus_checked, real_data_checked, det_checked = checkboxes.get_status()
     # make axes for sliders
     ax1 = fig.add_axes(slider1_rect)
     ax2 = fig.add_axes(slider2_rect)
@@ -105,6 +110,7 @@ def make_sliders(fig, checkboxes, init_comp_params):
     ax4 = fig.add_axes(slider4_rect)
     ax5 = fig.add_axes(slider5_rect)
     ax6 = fig.add_axes(slider6_rect)
+    
     # make sliders
     if chirp_q_checked:     
         chirp_init = mchirp_from_mass1_mass2(m1_init, m2_init)

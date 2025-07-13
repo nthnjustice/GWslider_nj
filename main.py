@@ -5,9 +5,6 @@ from widgets import *
 from matched_filter import *
 from GW_class import *
 
-
-det = input('Detector [H1, L1]: ')
-
 # setup main plot
 fig, ax = plt.subplots()
 
@@ -19,13 +16,13 @@ checkboxes, buttons, buttons1, buttons2, buttons3, buttons4, buttons5, buttons6 
 
 # start off using simulated data
 GW_signal = GW_simulated
-
+# start off with Hanford detector 
+det = 'H1'
 # make sliders
 slider_axes, sliders = make_sliders(fig, checkboxes, GW_signal.comp_params)
 
 # make button to go to reference parameters
 button = make_button(fig)
-#button2= make_button_GW(fig)
 
 # get initial parameters
 init_params = get_comp_params(sliders)
@@ -46,13 +43,17 @@ error_text.set_visible(False)
 #chi-squared text box 
 chi_text = fig.text(0.35, 0.35, rf'$\rho = {round(SNRmax, 3)}$')
 
-
 # function to handle checkbox changes
 def checkbox_update(val):
     # store current parameter values
     global slider_axes, sliders
     # remove old sliders
     remove_sliders(slider_axes, sliders)
+    # store current detector 
+    global det
+    # checkbox that switches detector data
+    det = 'L1' if checkboxes.get_status()[3] else 'H1'
+    print(f"detector = {det}")
     # check if using real data or not
     real_data_checked = checkboxes.get_status()[2]
     if not real_data_checked:
@@ -79,7 +80,7 @@ def checkbox_update(val):
 
 # function to handle slider changes
 def slider_update(val):
-    chirp_q_checked, plus_minus_checked, real_data_checked = checkboxes.get_status()
+    chirp_q_checked, plus_minus_checked, real_data_checked, det_checked= checkboxes.get_status()
     # get component parameters
     params = get_comp_params(sliders)
     # check if spins are in domain
@@ -107,17 +108,10 @@ def slider_update(val):
     return
 
 
-# # function to have buttons change color when clicked 
-# def on_button_click(event, button_to_change):
-#     button_to_change.color = 'green' 
-#     fig.canvas.draw_idle() 
-#     return
-
-
 # function to send sliders to reference parameters
 def button_push(event):
     # get status of checkboxes
-    chirp_q_checked, plus_minus_checked, real_data_checked = checkboxes.get_status()
+    chirp_q_checked, plus_minus_checked, real_data_checked, det_checked = checkboxes.get_status()
     # move sliders to injected value
     if chirp_q_checked:
         sliders[0].set_val(GW_signal.chirp)

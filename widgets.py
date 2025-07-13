@@ -23,7 +23,7 @@ def make_checkboxes(fig):
     chirp_q_label = r'use $\mathcal{M}$ and $q$'
     plus_minus_label = r'use $\chi_+$ and $\chi_-$'
     real_data_label = 'use real data'
-    det_label= 'Livingston'
+    det_label= 'L1 Detector'
     checkbox_labels = [chirp_q_label, plus_minus_label, real_data_label, det_label]
     # checkboxes start unchecked
     init_status = [False, False, False, False]
@@ -59,6 +59,10 @@ def make_checkboxes(fig):
     button6_ax.set_visible(False)  #hidden initially
     buttons6= Button(button6_ax, 'GW190828', hovercolor= '0.97')
 
+    button7_ax= fig.add_axes(button7_signal)
+    button7_ax.set_visible(False) #hidden initially
+    buttons7= Button(button7_ax, 'GW190519', hovercolor= '0.97')
+
     # Checkbox toggle 
     def on_checkbox_click(label):
         if label == real_data_label:
@@ -71,6 +75,7 @@ def make_checkboxes(fig):
             button4_ax.set_visible(show_dropdown)
             button5_ax.set_visible(show_dropdown)
             button6_ax.set_visible(show_dropdown)
+            button7_ax.set_visible(show_dropdown)
             fig.canvas.draw_idle()
         
         elif label == det_label:
@@ -93,8 +98,9 @@ def make_checkboxes(fig):
     buttons4.on_clicked(on_select)
     buttons5.on_clicked(on_select)
     buttons6.on_clicked(on_select)
+    buttons7.on_clicked(on_select)
 
-    return checkboxes, buttons, buttons1, buttons2, buttons3, buttons4, buttons5, buttons6
+    return checkboxes, buttons, buttons1, buttons2, buttons3, buttons4, buttons5, buttons6, buttons7
 
 
 # function to make sliders

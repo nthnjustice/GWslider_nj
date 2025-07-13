@@ -87,7 +87,7 @@ df = freqs[1] - freqs[0]
 
 
 # checkbox rectangle for plotting
-checkbox_rect = [0.05, 0.7, 0.2, 0.2]
+checkbox_rect = [0.05, 0.75, 0.2, 0.2]
 menu_rect= [0.05, 0.5, 0.2, 0.2]
 
 # slider rectangles for plotting
@@ -99,14 +99,15 @@ slider5_rect= [0.15, 0.06, 0.65, 0.03]
 slider6_rect= [0.15, 0.02, 0.65, 0.03]
 
 # button rectangle to go to injected (or MAP) parameters
-button_rect = [0.05, 0.6, 0.2, 0.04]
-button_signal= [0.05, 0.55, 0.2, 0.04]
-button1_signal= [0.05, 0.5, 0.2, 0.04]
-button2_signal= [0.05, 0.45, 0.2, 0.04]
-button3_signal= [0.05, 0.4, 0.2, 0.04]
-button4_signal= [0.05, 0.35, 0.2, 0.04]
-button5_signal= [0.05, 0.30, 0.2, 0.04]
-button6_signal= [0.05, 0.25, 0.2, 0.04]
+button_rect = [0.05, 0.7, 0.2, 0.04]
+button_signal= [0.05, 0.65, 0.2, 0.04]
+button1_signal= [0.05, 0.6, 0.2, 0.04]
+button2_signal= [0.05, 0.55, 0.2, 0.04]
+button3_signal= [0.05, 0.5, 0.2, 0.04]
+button4_signal= [0.05, 0.45, 0.2, 0.04]
+button5_signal= [0.05, 0.4, 0.2, 0.04]
+button6_signal= [0.05, 0.35, 0.2, 0.04]
+button7_signal= [0.05, 0.30, 0.2, 0.04]
 
 
 # parameter labels

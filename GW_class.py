@@ -60,6 +60,9 @@ with open('data/GW191109_data_dict.pkl', 'rb') as f:
 with open('data/GW190828_data_dict.pkl', 'rb') as f:
     GW190828_data= pickle.load(f)
 
+with open('data/GW190519_data_dict.pkl', 'rb') as f:
+    GW190519_data= pickle.load(f)
+
 # class instantiation for real GW events
 GW150914 = GWSignals(signal_ref_params['GW150914'][1], GW150914_data)
 GW190521 = GWSignals(signal_ref_params['GW190521'][1], GW190521_data)
@@ -68,6 +71,7 @@ GW200224 = GWSignals(signal_ref_params['GW200224'][1], GW200224_data)
 GW200311 = GWSignals(signal_ref_params['GW200311'][1], GW200311_data)
 GW191109 = GWSignals(signal_ref_params['GW191109'][1], GW191109_data)
 GW190828= GWSignals(signal_ref_params['GW190828'][1], GW190828_data)
+GW190519= GWSignals(signal_ref_params['GW190519'][1], GW190519_data)
 
 GW_simulated = GWSignals(signal_ref_params['GW150914'][1], GW150914_data)
 # template = 

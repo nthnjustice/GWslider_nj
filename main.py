@@ -12,7 +12,7 @@ fig, ax = plt.subplots()
 fig.subplots_adjust(left=0.3, bottom=0.3, right=0.95, top=0.95)
 
 # make checkboxes
-checkboxes, buttons, buttons1, buttons2, buttons3, buttons4, buttons5, buttons6 = make_checkboxes(fig)
+checkboxes, buttons, buttons1, buttons2, buttons3, buttons4, buttons5, buttons6, buttons7 = make_checkboxes(fig)
 
 # start off using simulated data
 GW_signal = GW_simulated
@@ -235,6 +235,21 @@ def button_push_signals6(event):
     fig.canvas.draw_idle()
     return 
 
+def button_push_signals7(event):
+    global GW_signal
+    GW_signal = GW190519
+    on_button_click(event, buttons7)
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
+    data_line.set_xdata(times)
+    data_line.set_ydata(data)
+    button_push(event)
+    checkbox_update(event)
+    ymax = np.max(np.abs(data))
+    ax.set_xlim(-0.25, 0.2)
+    ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+    fig.canvas.draw_idle()
+    return 
+
 
 
 # update plot as sliders move
@@ -263,7 +278,8 @@ buttons3.on_clicked(button_push_signals3)
 buttons4.on_clicked(button_push_signals4)
 buttons5.on_clicked(button_push_signals5)
 buttons6.on_clicked(button_push_signals6)
-signal_buttons = [buttons, buttons1, buttons2, buttons3, buttons4, buttons5, buttons6]
+buttons7.on_clicked(button_push_signals7)
+signal_buttons = [buttons, buttons1, buttons2, buttons3, buttons4, buttons5, buttons6, buttons7]
 
 
 # function to have buttons change color when clicked 

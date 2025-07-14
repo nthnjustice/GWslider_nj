@@ -163,9 +163,10 @@ def get_strain_whitenbp_data(fn_H1, fn_L1, fband, large_data_filename, time_cent
 #                                                1251009263.7)
 # with open('data/GW190828_data_dict.pkl', 'wb') as f: pickle.dump(GW190828_data_dict, f)
 
-GW190519_data_dict= get_strain_whitenbp_data('H-H1_GWOSC_4KHZ_R1-1242315347-32.hdf5',
-                                             'L-L1_GWOSC_4KHZ_R1-1242315347-32.hdf5',
-                                              [35., 350.],
-                                              'GWOSC_4KHZ_R1-1242313315-4096.hdf5',
-                                               1242315362.3)
-with open('data/GW190519_data_dict.pkl', 'wb') as f: pickle.dump(GW190519_data_dict, f)
+# GW190519_data_dict= get_strain_whitenbp_data('H-H1_GWOSC_4KHZ_R1-1242315347-32.hdf5',
+#                                              'L-L1_GWOSC_4KHZ_R1-1242315347-32.hdf5',
+#                                               [35., 350.],
+#                                               'GWOSC_4KHZ_R1-1242313315-4096.hdf5',
+#                                                1242315362.3)
+# with open('data/GW190519_data_dict.pkl', 'wb') as f: pickle.dump(GW190519_data_dict, f)
+

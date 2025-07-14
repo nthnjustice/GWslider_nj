@@ -60,7 +60,10 @@ def checkbox_update(val):
         global GW_signal
         GW_signal = GW_simulated
         fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
+        data_line.set_xdata(times)
+        data_line.set_ydata(data)
         ymax = np.max(np.abs(data))
+        ax.set_xlim(-0.25, 0.)
         ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     # make new sliders
     slider_axes, sliders = make_sliders(fig, checkboxes, GW_signal.comp_params)

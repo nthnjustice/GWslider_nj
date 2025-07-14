@@ -34,7 +34,7 @@ fit_line, = ax.plot(times, fit, color='C2', label='fit')
 ax.set_xlabel('time [s]')
 ax.set_ylabel('strain')
 ax.legend(loc='upper left')
-ax.set_xlim(0.25, 0.46)
+ax.set_xlim(-0.25, 0.)
 
 # make error message if spins are outside domain
 error_text = fig.text(0.05, 0.1, 'Spins not in domain.', transform=ax.transAxes, fontsize=10)

@@ -63,6 +63,9 @@ with open('data/GW190828_data_dict.pkl', 'rb') as f:
 with open('data/GW190519_data_dict.pkl', 'rb') as f:
     GW190519_data= pickle.load(f)
 
+with open('data/simulated_GW.pkl', 'rb') as f:
+    simulated_data = pickle.load(f)
+
 # class instantiation for real GW events
 GW150914 = GWSignals(signal_ref_params['GW150914'][1], GW150914_data)
 GW190521 = GWSignals(signal_ref_params['GW190521'][1], GW190521_data)
@@ -73,16 +76,9 @@ GW191109 = GWSignals(signal_ref_params['GW191109'][1], GW191109_data)
 GW190828= GWSignals(signal_ref_params['GW190828'][1], GW190828_data)
 GW190519= GWSignals(signal_ref_params['GW190519'][1], GW190519_data)
 
-GW_simulated = GWSignals(signal_ref_params['GW150914'][1], GW150914_data)
-# template = 
-# GW_simulated.dictionary['H1']['strain']
+# GW_simulated = GWSignals(signal_ref_params['GW150914'][1], GW150914_data)
 
+GW_simulated = GWSignals(np.array([30., 20., 0., 0.]), simulated_data)
 
-# {'H1': {'strain': strain_H1, 'strain_whiten': strain_H1_whiten,
-#                          'strain_whitenbp': strain_H1_whitenbp},
-#                   'L1': {'strain': strain_L1, 'strain_whiten': strain_L1_whiten,
-#                          'strain_whitenbp': strain_L1_whitenbp},
-#                   'time': time, 'time_center': time_center, 'dt': dt, 'fs': fs,
-#                   'large_data_psds': large_data_psds}
 
 

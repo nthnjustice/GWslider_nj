@@ -53,7 +53,7 @@ def checkbox_update(val):
     global det
     # checkbox that switches detector data
     det = 'L1' if checkboxes.get_status()[3] else 'H1'
-    print(f"detector = {det}")
+    # print(f"detector = {det}")
     # check if using real data or not
     real_data_checked = checkboxes.get_status()[2]
     if not real_data_checked:
@@ -65,6 +65,12 @@ def checkbox_update(val):
         ymax = np.max(np.abs(data))
         ax.set_xlim(-0.25, 0.)
         ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+    # update data which is plotted
+    fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
+    data_line.set_xdata(times)
+    data_line.set_ydata(data)
+    ymax = np.max(np.abs(data))
+    ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     # make new sliders
     slider_axes, sliders = make_sliders(fig, checkboxes, GW_signal.comp_params)
     # remove initial position ticks on each slider

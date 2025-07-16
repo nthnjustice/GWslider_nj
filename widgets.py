@@ -20,10 +20,10 @@ def make_checkboxes(fig):
     # make axes
     checkbox_ax = fig.add_axes(checkbox_rect)
     # checkbox labels
-    chirp_q_label = r'use $\mathcal{M}$ and $q$'
-    plus_minus_label = r'use $\chi_+$ and $\chi_-$'
-    real_data_label = 'use real data'
-    det_label= 'L1 Detector'
+    chirp_q_label = r'Use $\mathcal{M}$ and $q$'
+    plus_minus_label = r'Use $\chi_+$ and $\chi_-$'
+    real_data_label = 'Use Real Data'
+    det_label= 'Toggle Detector (L1, H1)'
     checkbox_labels = [chirp_q_label, plus_minus_label, real_data_label, det_label]
     # checkboxes start unchecked
     init_status = [False, False, False, False]
@@ -82,6 +82,7 @@ def make_checkboxes(fig):
             idx = checkbox_labels.index(label)
             is_livingston = checkboxes.get_status()[idx]
             det_state['det'] = 'L1' if is_livingston else 'H1'
+            
 
 
     checkboxes.on_clicked(on_checkbox_click)
@@ -135,8 +136,8 @@ def make_sliders(fig, checkboxes, init_comp_params):
         slider3 = Slider(ax=ax3, label=chi1_label, valmin=chi1_min, valmax=chi1_max, valinit=chi1_init,  color= 'C2')
         slider4 = Slider(ax=ax4, label=chi2_label, valmin=chi2_min, valmax=chi2_max, valinit=chi2_init,  color= 'C2')
     
-    slider5 = Slider(ax=ax5, label=amp_label, valmin=0, valmax=150, valinit= 1,  color= 'C2')
-    slider6 = Slider(ax=ax6, label=phase_label, valmin= -np.pi, valmax= np.pi, valinit= 0,  color= 'C2')
+    slider5 = Slider(ax=ax5, label=amp_label, valmin=0, valmax=150, valinit= 1,  color= '0.65')
+    slider6 = Slider(ax=ax6, label=phase_label, valmin= -np.pi, valmax= np.pi, valinit= 0,  color= '0.65')
     # store sliders and axes
     slider_axes = [ax1, ax2, ax3, ax4, ax5, ax6]
     sliders = [slider1, slider2, slider3, slider4, slider5, slider6]
@@ -149,7 +150,7 @@ def make_sliders(fig, checkboxes, init_comp_params):
 # make button to go to correct (or MAP) parameter values
 def make_button(fig):
     button_ax = fig.add_axes(button_rect)
-    return Button(button_ax, 'go to reference parameters', hovercolor='0.975')
+    return Button(button_ax, 'Go to Reference Parameters', hovercolor='0.975')
 
 
 # function to get component parameters from sliders and checkboxes

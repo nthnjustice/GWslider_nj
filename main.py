@@ -29,7 +29,7 @@ init_params = get_comp_params(sliders)
 
 # plot data and fit
 fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
-data_line, = ax.plot(times, data, color='Black', label='data', alpha=0.5)
+data_line, = ax.plot(times, data, color='Black', label=f'{det} data', alpha=0.5)
 fit_line, = ax.plot(times, fit, color='C2', label='fit')
 ax.set_xlabel('time [s]')
 ax.set_ylabel('strain')
@@ -50,9 +50,12 @@ def checkbox_update(val):
     # remove old sliders
     remove_sliders(slider_axes, sliders)
     # store current detector 
-    global det
+    global det, data_line
     # checkbox that switches detector data
     det = 'L1' if checkboxes.get_status()[3] else 'H1'
+     # update label
+    data_line.set_label(f'{det} data')
+    print("data_line label:", data_line.get_label())
     # print(f"detector = {det}")
     # check if using real data or not
     real_data_checked = checkboxes.get_status()[2]
@@ -71,6 +74,8 @@ def checkbox_update(val):
     data_line.set_ydata(data)
     ymax = np.max(np.abs(data))
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+    # Rebuild legend in same location
+    ax.legend(loc='upper left')
     # make new sliders
     slider_axes, sliders = make_sliders(fig, checkboxes, GW_signal.comp_params)
     # remove initial position ticks on each slider

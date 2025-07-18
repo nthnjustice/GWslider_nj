@@ -29,8 +29,10 @@ init_params = get_comp_params(sliders)
 
 # plot data and fit
 fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
+residuals= residual_func(data, fit)
 data_line, = ax.plot(times, data, color='Black', label=f'{det} data', alpha=0.5)
 fit_line, = ax.plot(times, fit, color='C2', label='fit')
+residual_line, = ax.plot(times, residuals, color= 'blue', label= 'residual')
 ax.set_xlabel('time [s]')
 ax.set_ylabel('strain')
 ax.legend(loc='upper left')
@@ -50,13 +52,11 @@ def checkbox_update(val):
     # remove old sliders
     remove_sliders(slider_axes, sliders)
     # store current detector 
-    global det, data_line
+    global det, data_line, residual_line
     # checkbox that switches detector data
     det = 'L1' if checkboxes.get_status()[3] else 'H1'
      # update label
     data_line.set_label(f'{det} data')
-    print("data_line label:", data_line.get_label())
-    # print(f"detector = {det}")
     # check if using real data or not
     real_data_checked = checkboxes.get_status()[2]
     if not real_data_checked:
@@ -65,6 +65,9 @@ def checkbox_update(val):
         fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
         data_line.set_xdata(times)
         data_line.set_ydata(data)
+        residuals= residual_func(data, fit)
+        residual_line.set_xdata(times)
+        residual_line.set_ydata(residuals)
         ymax = np.max(np.abs(data))
         ax.set_xlim(-0.25, 0.)
         ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
@@ -72,6 +75,9 @@ def checkbox_update(val):
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
+    residuals= residual_func(data, fit)
+    residual_line.set_xdata(times)
+    residual_line.set_ydata(residuals)
     ymax = np.max(np.abs(data))
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     # Rebuild legend in same location
@@ -100,21 +106,26 @@ def slider_update(val):
     # check if spins are in domain
     if params[2] < chi1_min or params[2] > chi1_max or params[3] < chi2_min or params[3] > chi2_max:
         fit_line.set_ydata(np.zeros(waveform.Nt))
+        residual_line.set_ydata(residuals)
         error_text.set_visible(True)
         chi_text.set_visible(False)
     elif real_data_checked:
         fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(params, GW_signal, det)
+        residuals = residual_func(data, fit)
         sliders[4].set_val(amp)
         sliders[5].set_val(phase)
         fit_line.set_ydata(fit)
+        residual_line.set_ydata(residuals)
         chi_text.set_visible(True)
         error_text.set_visible(False)
         chi_text.set_text(rf'$\rho = {round(SNRmax, 3)}$')
     else:
         fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(params, GW_signal, det)
+        residuals= residual_func(data, fit)
         sliders[4].set_val(amp)
         sliders[5].set_val(phase)
         fit_line.set_ydata(fit)
+        residual_line.set_ydata(residuals)
         chi_text.set_visible(True)
         error_text.set_visible(False)
         chi_text.set_text(rf'$\rho = {round(SNRmax, 3)}$')
@@ -149,8 +160,11 @@ def button_push_signals(event):
     GW_signal =  GW150914
     on_button_click(event, buttons)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
+    residuals= residual_func(data, fit)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
+    residual_line.set_xdata(times)
+    residual_line.set_ydata(residuals)
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
@@ -164,6 +178,9 @@ def button_push_signals1(event):
     GW_signal=  GW190521
     on_button_click(event, buttons1)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
+    residuals= residual_func(data, fit)
+    residual_line.set_xdata(times)
+    residual_line.set_ydata(residuals)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
     button_push(event)
@@ -181,6 +198,9 @@ def button_push_signals2(event):
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
+    residuals= residual_func(data, fit)
+    residual_line.set_xdata(times)
+    residual_line.set_ydata(residuals)
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
@@ -194,8 +214,11 @@ def button_push_signals3(event):
     GW_signal = GW200224
     on_button_click(event, buttons3)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
+    residuals= residual_func(data, fit)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
+    residual_line.set_xdata(times)
+    residual_line.set_ydata(residuals)
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
@@ -209,6 +232,9 @@ def button_push_signals4(event):
     GW_signal = GW200311
     on_button_click(event, buttons4)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
+    residuals= residual_func(data, fit)
+    residual_line.set_xdata(times)
+    residual_line.set_ydata(residuals)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
     button_push(event)
@@ -224,8 +250,11 @@ def button_push_signals5(event):
     GW_signal = GW191109
     on_button_click(event, buttons5)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
+    residuals= residual_func(data, fit)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
+    residual_line.set_xdata(times)
+    residual_line.set_ydata(residuals)
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
@@ -239,8 +268,10 @@ def button_push_signals6(event):
     GW_signal = GW190828
     on_button_click(event, buttons6)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
+    residuals= residual_func(data, fit)
     data_line.set_xdata(times)
-    data_line.set_ydata(data)
+    residual_line.set_xdata(times)
+    residual_line.set_ydata(residuals)
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
@@ -254,8 +285,11 @@ def button_push_signals7(event):
     GW_signal = GW190519
     on_button_click(event, buttons7)
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
+    residuals= residual_func(data, fit)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
+    residual_line.set_xdata(times)
+    residual_line.set_ydata(residuals)
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
@@ -278,6 +312,9 @@ checkboxes.on_clicked(checkbox_update)
 def btn_push_sig(event, signal):
     data_line.set_xdata(times)
     data_line.set_ydata(data)
+    residual_line.set_xdata(times)
+    residual_line.set_ydata(residuals)
+        
     checkbox_update(event)
     fig.canvas.draw_idle()
     return

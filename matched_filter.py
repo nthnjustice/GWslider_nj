@@ -193,6 +193,7 @@ def calculate_matched_filter(template_p, total_data, det, t_amount=4):
     # get residuals and whitened data/template
     template_wbp = get_shifted_data(
         template_p, fband, filter_data[det], data_psd, dt)
+    
 
     return template_wbp, strain_whitenbp, time_filtered - time_center, SNRmax, 1 / d_eff, phase
 
@@ -201,4 +202,5 @@ def calculate_matched_filter(template_p, total_data, det, t_amount=4):
 def wrapped_matched_filter(params, GW_signal, det):
     return calculate_matched_filter(get_template(params, GW_signal.dictionary), GW_signal.dictionary, det)
 
-
+def residual_func(data, fit):
+    return data-fit

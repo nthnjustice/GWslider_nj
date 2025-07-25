@@ -105,9 +105,11 @@ def slider_update(val):
     params = get_comp_params(sliders)
     # check if spins are in domain
     if params[2] < chi1_min or params[2] > chi1_max or params[3] < chi2_min or params[3] > chi2_max:
-        fit_line.set_ydata(np.zeros(waveform.Nt))
         fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
-        residuals = residual_func(data, fit)
+        zero_fit = np.zeros_like(times)
+        fit_line.set_data(times, zero_fit)
+        residuals = residual_func(data, zero_fit)
+        residual_line.set_data(times, residuals)
         residual_line.set_ydata(residuals)
         error_text.set_visible(True)
         chi_text.set_visible(False)
@@ -343,6 +345,5 @@ def on_button_click(event, button_to_change):
     button_to_change.color = 'C2' 
     fig.canvas.draw_idle() 
     return
-
 plt.show()
 

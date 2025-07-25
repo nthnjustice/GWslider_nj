@@ -194,7 +194,6 @@ def calculate_matched_filter(template_p, total_data, det, t_amount=4):
     template_wbp = get_shifted_data(
         template_p, fband, filter_data[det], data_psd, dt)
     
-
     return template_wbp, strain_whitenbp, time_filtered - time_center, SNRmax, 1 / d_eff, phase
 
 

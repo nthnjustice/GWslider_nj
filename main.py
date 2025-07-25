@@ -105,12 +105,13 @@ def slider_update(val):
     params = get_comp_params(sliders)
     # check if spins are in domain
     if params[2] < chi1_min or params[2] > chi1_max or params[3] < chi2_min or params[3] > chi2_max:
+        #fit_line.set_ydata(np.zeros(waveform.Nt))
+        #residual_line.set_ydata(np.zeros(waveform.Nt))
         fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
-        zero_fit = np.zeros_like(times)
+        zero_fit = np.zeros_like(data)
         fit_line.set_data(times, zero_fit)
         residuals = residual_func(data, zero_fit)
         residual_line.set_data(times, residuals)
-        residual_line.set_ydata(residuals)
         error_text.set_visible(True)
         chi_text.set_visible(False)
     elif real_data_checked:

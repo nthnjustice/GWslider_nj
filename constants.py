@@ -124,4 +124,3 @@ amp_label= r'amplitude'
 phase_label= r'phase'
 det_label= r'Livingston Detector'
 
-

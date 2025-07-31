@@ -24,9 +24,10 @@ def make_checkboxes(fig):
     plus_minus_label = r'Use $\chi_+$ and $\chi_-$'
     real_data_label = 'Use Real Data'
     det_label= 'Toggle Detector (L1, H1)'
-    checkbox_labels = [chirp_q_label, plus_minus_label, real_data_label, det_label]
+    residual_label= 'Residuals'
+    checkbox_labels = [chirp_q_label, plus_minus_label, real_data_label, det_label, residual_label]
     # checkboxes start unchecked
-    init_status = [False, False, False, False]
+    init_status = [False, False, False, False, False]
     checkboxes = CheckButtons(checkbox_ax, checkbox_labels, init_status)
 
     #create buttons
@@ -109,7 +110,7 @@ def make_sliders(fig, checkboxes, init_comp_params):
     # unpack parameter values
     m1_init, m2_init, chi1_init, chi2_init = init_comp_params
     # get status of checkboxes
-    chirp_q_checked, plus_minus_checked, real_data_checked, det_checked = checkboxes.get_status()
+    chirp_q_checked, plus_minus_checked, real_data_checked, det_checked, residual_checked = checkboxes.get_status()
     # make axes for sliders
     ax1 = fig.add_axes(slider1_rect)
     ax2 = fig.add_axes(slider2_rect)

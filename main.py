@@ -32,7 +32,8 @@ fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_si
 residuals= residual_func(data, fit)
 data_line, = ax.plot(times, data, color='Black', label=f'{det} data', alpha=0.5)
 fit_line, = ax.plot(times, fit, color='C2', label='fit')
-residual_line, = ax.plot(times, residuals, color= 'blue', label= 'residual')
+residual_line, = ax.plot(times, residuals, color= 'steelblue', alpha= 0.8,label= 'residual')
+residual_line.set_visible(False)
 ax.set_xlabel('time [s]')
 ax.set_ylabel('strain')
 ax.legend(loc='upper left')
@@ -59,25 +60,32 @@ def checkbox_update(val):
     data_line.set_label(f'{det} data')
     # check if using real data or not
     real_data_checked = checkboxes.get_status()[2]
+    residuals_checked= checkboxes.get_status()[4]
     if not real_data_checked:
         global GW_signal
         GW_signal = GW_simulated
         fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
         data_line.set_xdata(times)
         data_line.set_ydata(data)
+        ymax = np.max(np.abs(data))
+        ax.set_xlim(-0.25, 0.)
+        ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+    if residuals_checked:
+        fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
         residuals= residual_func(data, fit)
         residual_line.set_xdata(times)
         residual_line.set_ydata(residuals)
         ymax = np.max(np.abs(data))
         ax.set_xlim(-0.25, 0.)
         ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
+        residual_line.set_visible(True)
+    else:   
+        residual_line.set_visible(False)  
+
     # update data which is plotted
     fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
     data_line.set_xdata(times)
     data_line.set_ydata(data)
-    residuals= residual_func(data, fit)
-    residual_line.set_xdata(times)
-    residual_line.set_ydata(residuals)
     ymax = np.max(np.abs(data))
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     # Rebuild legend in same location
@@ -100,13 +108,11 @@ def checkbox_update(val):
 
 # function to handle slider changes
 def slider_update(val):
-    chirp_q_checked, plus_minus_checked, real_data_checked, det_checked= checkboxes.get_status()
+    chirp_q_checked, plus_minus_checked, real_data_checked, det_checked, residual_checked= checkboxes.get_status()
     # get component parameters
     params = get_comp_params(sliders)
     # check if spins are in domain
     if params[2] < chi1_min or params[2] > chi1_max or params[3] < chi2_min or params[3] > chi2_max:
-        #fit_line.set_ydata(np.zeros(waveform.Nt))
-        #residual_line.set_ydata(np.zeros(waveform.Nt))
         fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
         zero_fit = np.zeros_like(data)
         fit_line.set_data(times, zero_fit)
@@ -141,7 +147,7 @@ def slider_update(val):
 # function to send sliders to reference parameters
 def button_push(event):
     # get status of checkboxes
-    chirp_q_checked, plus_minus_checked, real_data_checked, det_checked = checkboxes.get_status()
+    chirp_q_checked, plus_minus_checked, real_data_checked, det_checked, residual_checked = checkboxes.get_status()
     # move sliders to injected value
     if chirp_q_checked:
         sliders[0].set_val(GW_signal.chirp)

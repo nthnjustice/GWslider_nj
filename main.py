@@ -68,16 +68,13 @@ def checkbox_update(val):
         data_line.set_xdata(times)
         data_line.set_ydata(data)
         ymax = np.max(np.abs(data))
-        ax.set_xlim(-0.25, 0.)
+        ax.set_xlim(-0.15, 0.)
         ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     if residuals_checked:
         fit, data, times, SNRmax, amp, phase = wrapped_matched_filter(init_params, GW_signal, det)
         residuals= residual_func(data, fit)
         residual_line.set_xdata(times)
         residual_line.set_ydata(residuals)
-        ymax = np.max(np.abs(data))
-        ax.set_xlim(-0.25, 0.)
-        ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
         residual_line.set_visible(True)
     else:   
         residual_line.set_visible(False)  
@@ -179,7 +176,7 @@ def button_push_signals(event):
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
-    ax.set_xlim(0.25, 0.46)
+    ax.set_xlim(0.30, 0.46)
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     fig.canvas.draw_idle()
     return 
@@ -197,7 +194,7 @@ def button_push_signals1(event):
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
-    ax.set_xlim(-0.25, 0.2)
+    ax.set_xlim(-0.05, 0.15)
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     fig.canvas.draw_idle()
     return 
@@ -215,7 +212,7 @@ def button_push_signals2(event):
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
-    ax.set_xlim(-0.25, 0.2)
+    ax.set_xlim(-0.10, 0.10)
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     fig.canvas.draw_idle()
     return 
@@ -233,7 +230,7 @@ def button_push_signals3(event):
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
-    ax.set_xlim(-0.25, 0.2)
+    ax.set_xlim(-0.10, 0.10)
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     fig.canvas.draw_idle()
     return 
@@ -251,7 +248,7 @@ def button_push_signals4(event):
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
-    ax.set_xlim(-0.25, 0.2)
+    ax.set_xlim(-0.10, 0.2)
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     fig.canvas.draw_idle()
     return 
@@ -269,7 +266,7 @@ def button_push_signals5(event):
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
-    ax.set_xlim(-0.25, 0.2)
+    ax.set_xlim(-0.10, 0.10)
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     fig.canvas.draw_idle()
     return 
@@ -286,7 +283,7 @@ def button_push_signals6(event):
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
-    ax.set_xlim(-0.25, 0.2)
+    ax.set_xlim(-0.15, 0.15)
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     fig.canvas.draw_idle()
     return 
@@ -304,7 +301,7 @@ def button_push_signals7(event):
     button_push(event)
     checkbox_update(event)
     ymax = np.max(np.abs(data))
-    ax.set_xlim(-0.25, 0.2)
+    ax.set_xlim(-0.05, 0.2)
     ax.set_ylim(-1.1 * ymax, 1.1 * ymax)
     fig.canvas.draw_idle()
     return 

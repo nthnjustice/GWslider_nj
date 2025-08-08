@@ -1,12 +1,11 @@
 '''Main python file to run GW slider.'''
-
 import matplotlib.pyplot as plt
 from widgets import *
 from matched_filter import *
 from GW_class import *
 
 # setup main plot
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(12, 8))
 
 # adjust plot area
 fig.subplots_adjust(left=0.3, bottom=0.3, right=0.95, top=0.95)
@@ -37,7 +36,7 @@ residual_line.set_visible(False)
 ax.set_xlabel('time [s]')
 ax.set_ylabel('strain')
 ax.legend(loc='upper left')
-ax.set_xlim(-0.25, 0.)
+ax.set_xlim(-0.15, 0.)
 
 # make error message if spins are outside domain
 error_text = fig.text(0.05, 0.1, 'Spins not in domain.', transform=ax.transAxes, fontsize=10)

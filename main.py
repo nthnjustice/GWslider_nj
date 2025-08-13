@@ -1,4 +1,7 @@
 '''Main python file to run GW slider.'''
+import matplotlib
+matplotlib.use('TkAgg')
+
 import matplotlib.pyplot as plt
 from widgets import *
 from matched_filter import *
